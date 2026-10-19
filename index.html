@@ -221,6 +221,83 @@ button{font-family:inherit}
 @keyframes starpop{from{transform:scale(.2) rotate(-40deg);opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .rw{display:flex;align-items:center;justify-content:center;gap:12px;font-weight:700;color:var(--ink2)}
+
+/* ===================== ПЛЮШ: войлок, ткань, прострочка ===================== */
+:root{
+ --noise:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .24  0 0 0 0 .14  0 0 0 .26 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+ --plate:var(--noise),linear-gradient(#fff4e2,#f2d9bd);
+ --puff:0 5px 10px #2a14083d,inset 0 5px 8px #ffffffd0,inset 0 -7px 10px #c98f6a4d;
+ --lip:var(--puff);
+ --stitch:#a9775a77;
+}
+html,body{background:radial-gradient(circle at 50% 25%,#7a4a3c,#2e1914)}
+#app{background:
+  linear-gradient(135deg,#0000 47.5%,#00000040 49%,#ffffff22 51%,#0000 52.5%) 0 0/44px 44px,
+  linear-gradient(45deg,#0000 47.5%,#00000040 49%,#ffffff22 51%,#0000 52.5%) 0 0/44px 44px,
+  var(--noise),radial-gradient(ellipse at 50% 40%,#8a5648,#5a362c 80%);
+  box-shadow:inset 0 0 70px #1a0c0577}
+
+/* прострочка по краю всех мягких деталей */
+.chip,#plaque,.rb,.st,.row,.btn,.card,#acts,.sp,.pp,.card h2,.tile{position:relative}
+.x,.bub{position:absolute}
+.chip::after,#plaque::after,.rb::after,.st::after,.row::after,.btn::after,#acts::after,.sp::after,.pp::after,.card h2::after,.tile::after,.x::after,.bub::after{
+  content:"";position:absolute;inset:3px;border-radius:inherit;border:1.6px dashed var(--stitch);pointer-events:none}
+.bub::before{display:none}
+.tile::after,.btn::after,.card h2::after,.pp.g::after{border-color:#ffffffa0}
+.pp::after{inset:2px;border-width:1.3px}
+.card::after{content:"";position:absolute;inset:7px;border-radius:28px;border:2px dashed var(--stitch);pointer-events:none}
+#acts::after{inset:5px;border-radius:26px}
+#acts button{z-index:1}
+.st::after{display:none}
+
+/* подушечки вместо плоских плашек */
+.chip,#plaque,.rb,.st{box-shadow:var(--puff)}
+.rb:active,.x:active{transform:scale(.92);box-shadow:var(--puff)}
+.tile{border-radius:24px;background:var(--noise),radial-gradient(circle at 50% 14%,#ffffff66,#fff0 58%),linear-gradient(var(--t1),var(--t2));
+  box-shadow:0 7px 10px #2a140845,inset 0 6px 9px #ffffffaa,inset 0 -9px 12px var(--t3)}
+#acts .tile{max-width:68px}
+#acts button:active .tile{transform:scale(.92);box-shadow:0 2px 4px #2a140845,inset 0 6px 9px #ffffffaa,inset 0 -9px 12px var(--t3)}
+.row .tile{border-radius:20px}
+.bd{box-shadow:0 3px 6px #2a14083d,inset 0 3px 5px #ffffffaa,inset 0 -5px 7px var(--t3);background:var(--noise),linear-gradient(var(--t1),var(--t2))}
+.bd::after{display:none}
+/* иконки как войлочные аппликации с кремовым кантом */
+#acts .tile .ic,.row .tile .ic,.bd .ic{filter:drop-shadow(1.5px 0 0 #fff4e2) drop-shadow(-1.5px 0 0 #fff4e2) drop-shadow(0 1.5px 0 #fff4e2) drop-shadow(0 -1.5px 0 #fff4e2) drop-shadow(0 3px 2px #3a1d0f55)}
+.bd .ic{filter:drop-shadow(1px 0 0 #fff4e2) drop-shadow(-1px 0 0 #fff4e2) drop-shadow(0 1px 0 #fff4e2) drop-shadow(0 -1px 0 #fff4e2) drop-shadow(0 2px 1px #3a1d0f55)}
+
+/* нижняя панель — мягкая подушка */
+#acts{background:var(--noise),linear-gradient(#fff1de,#f0d3b2);box-shadow:0 8px 16px #1a0c0566,inset 0 5px 8px #ffffffcc,inset 0 -8px 12px #c98f6a50}
+
+/* стёжка вместо блика на шкалах */
+.xp,.bar{background:#d2b08e;box-shadow:inset 0 3px 5px #5a3a1a66}
+.xp i::after,.bar i::after{left:6px;right:6px;top:calc(50% - 1px);height:0;border-top:2px dashed #ffffffb0;border-radius:0;background:none}
+
+/* рамка сцены — мягкий стёганый валик */
+#scene{box-shadow:0 0 0 4px #f2b9a2,0 0 0 9px #d98a72,0 0 0 11px #b3604a,0 16px 30px #1a0c0599;outline:2px dashed #fff3e0d0;outline-offset:6px}
+#scene::after{box-shadow:inset 0 0 40px #1a0c0555,inset 0 0 0 2px #ffffff18}
+
+/* окна */
+.card{background:var(--noise),linear-gradient(#fff4e2,#f2d9bd);box-shadow:0 0 0 5px #f2b9a2,0 0 0 10px #d98a72,0 0 0 12px #b3604a,0 24px 40px #0008,inset 0 6px 10px #ffffffcc;outline:2px dashed #fff3e0cc;outline-offset:7px}
+.card h2{background:var(--noise),linear-gradient(#ee9f86,#d06f55);color:#fff4e2;border-radius:22px;
+  box-shadow:0 6px 10px #6a2a1a55,inset 0 5px 8px #ffffff66,inset 0 -7px 10px #9c432688;text-shadow:0 2px 0 #9c4326}
+.row{background:var(--noise),linear-gradient(#fff7ea,#f6e0c4);box-shadow:0 5px 9px #2a140838,inset 0 5px 8px #ffffffd0,inset 0 -6px 9px #c98f6a40}
+.row:active{transform:scale(.97);box-shadow:0 2px 4px #2a140838,inset 0 5px 8px #ffffffd0}
+.row.armed{background:var(--noise),linear-gradient(#fde4da,#f6c8b8)}
+.btn{border-radius:26px;background:var(--noise),linear-gradient(#f0a58a,#d06a4e);box-shadow:0 7px 12px #5a22144d,inset 0 6px 9px #ffffff77,inset 0 -9px 12px #9c4326aa}
+.btn:active{transform:scale(.97);box-shadow:0 2px 5px #5a22144d,inset 0 6px 9px #ffffff77,inset 0 -9px 12px #9c4326aa}
+.btn.go{background:var(--noise),linear-gradient(#bddc94,#5f9a42);box-shadow:0 7px 12px #2a4a1a4d,inset 0 6px 9px #ffffff77,inset 0 -9px 12px #3f6e2aaa}
+.btn.alt{background:var(--plate);box-shadow:var(--puff)}
+.btn.alt::after{border-color:var(--stitch)}
+.pp{box-shadow:0 3px 6px #2a14083d,inset 0 3px 5px #ffffffaa,inset 0 -4px 6px #b8801a99}
+.pp.g{box-shadow:0 3px 6px #2a14083d,inset 0 3px 5px #ffffff88,inset 0 -4px 6px #3f6e2a99}
+.pp.no{box-shadow:inset 0 3px 5px #fff8,inset 0 -4px 6px #bfa68466}
+.sp{background:var(--noise),linear-gradient(#fff7ea,#f6e0c4);box-shadow:0 5px 9px #2a140838,inset 0 5px 8px #ffffffd0,inset 0 -6px 9px #c98f6a40}
+.sp.on{box-shadow:0 5px 9px #2a140838,inset 0 5px 8px #ffffffd0,0 0 0 4px #ffcf6b88}
+.sp::after{inset:4px;border-radius:20px}
+.coat{box-shadow:0 0 0 2px #b98a58,0 4px 6px #2a140855,inset 0 -5px 7px #00000024,inset 0 4px 6px #ffffff77}
+#pname{border-radius:22px;background:var(--noise),#fffaf0;box-shadow:inset 0 4px 7px #8a5a3a44}
+#toast{background:var(--noise),#6a4030;box-shadow:0 5px 10px #1a0c0566,inset 0 3px 5px #ffffff30;border:1.6px dashed #ffffff55}
+#garea{box-shadow:inset 0 4px 14px #0008,0 0 0 4px #d98a72,0 0 0 6px #b3604a}
+.gt{background:#d2b08e;box-shadow:inset 0 3px 5px #5a3a1a77}
 </style>
 </head>
 <body>
