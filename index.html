@@ -60,11 +60,9 @@ button{font-family:inherit}
 
 /* ---------- сцена на весь экран ---------- */
 #scene{position:absolute;inset:0;margin:0;overflow:hidden;container-type:size;z-index:0}
-#scene::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:9;background:linear-gradient(#1a0c0566,#0000 22%,#0000 60%,#1a0c0580)}
 #petWrap{position:absolute;left:50%;bottom:calc(var(--acts-h) + 22px);width:min(72%,300px,46cqh);transform:translateX(-50%);cursor:pointer;z-index:3;isolation:isolate}
 .bub{position:absolute;right:2%;top:2%;width:54px;height:54px;border-radius:50%;background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line);display:grid;place-items:center;animation:bubf 1.8s ease-in-out infinite;z-index:2}
 /* ---------- комната ---------- */
-#scene::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:9;box-shadow:inset 0 0 38px #1a0c0566,inset 0 0 0 2px #ffffff14}
 #room{position:absolute;inset:0}
 .wall{position:absolute;inset:0 0 34% 0;background:linear-gradient(#ffe6cc,#ffd1ae)}
 .wall::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 26px,#ffffff30 26px 52px)}
