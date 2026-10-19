@@ -201,10 +201,25 @@ Using the attached image as the character reference, keep everything identical (
 ---
 
 ## Фон комнаты
-Новый чат. Сохрани как `bg_room.png`
+Фон должен быть в том же стиле, что и звери: стилизованный 3D-мультфильм, мягкие округлые формы, без фотореализма. Два шага.
+
+**Шаг 1. День.** Новый чат. **Прикрепи `cat_0_3_happy.png`**: только как образец стиля, кота в кадре быть не должно. Сохрани как `bg_room.png`
 ```
-Create an image: a cozy warm interior of a small room with a wooden floor, soft window light with dust motes, shallow depth of field, stylized 3D animated feature-film look. Vertical 9:16 format, an empty floor area in the lower center for a character, no characters, no text.
+Create an image: the interior of a cozy cartoon attic nook as a background for a pet game, in the same stylized 3D animated feature-film look and the same soft lighting as the attached cat (use the attached image ONLY as a reference for rendering style, softness, color warmth and lighting; do not include the cat or any other animal or character in the picture). Everything is simplified, chubby and soft, like a premium toy diorama: smooth matte surfaces, rounded edges, gentle clay-like and felt-like materials, no photorealistic wood grain, no harsh textures, no dirt, no clutter. Straight-on eye-level camera facing the back wall, simple calm perspective; the back wall and the floor fill the whole frame edge to edge, with no visible side walls, ceiling or room edges. Palette: warm cream and peach wall, light honey-colored floor planks drawn as large smooth soft shapes, accents of terracotta, sage green, dusty blue and mustard yellow. Props, all rounded and soft: a large round window with a thick cream frame in the upper middle showing a pastel daytime sky with a few fluffy clouds, a pile of chunky knitted blankets and patchwork pillows along the left wall where it meets the floor, a small potted plant with big round leaves on a little wooden crate at the right, a string of softly glowing warm bulbs hanging in a gentle curve across the wall, a round woven rug on the floor. Soft warm sunlight from the window with a gentle glow on the floor, soft ambient occlusion, slight depth of field on the far wall. Keep the top 15% of the image calm and light with almost no details, and keep the whole lower center empty floor with no objects, for a character and for interface elements. No characters, no animals, no text, no logos. Vertical 9:16 format.
 ```
+
+**Шаг 2. Ночь.** **Прикрепи `bg_room.png`**. Сохрани как `bg_room_night.png`
+```
+Using the attached image as the exact reference (same room, same composition, same camera angle, same furniture and objects in the same places, same stylized 3D animated feature-film rendering, same empty floor area), change only the time of day to night: the window shows a deep blue starry sky with a glowing round pale-yellow moon and tiny stars, the wall and floor turn into soft muted indigo and violet tones, the only light comes from the warm string bulbs and a faint cool moonlight patch on the floor, cozy and calm, still soft and clean with no harsh shadows. Keep the top 15% calm and the lower center empty. No characters, no animals, no text. Vertical 9:16 format.
+```
+
+Обработка: положи оба PNG в папку `raw_bg/` и запусти `python3 prepare_assets.py raw_bg assets`. Для файлов `bg_*` скрипт не вырезает фон и не обрезает, а только уменьшает до 768 px по ширине и сохраняет WebP.
+
+Если Gemini ошибается с фоном
+- **В кадре появился кот или другой зверь.** Допиши: `Absolutely no animals or characters anywhere in the picture.`
+- **Фон снова выходит фотореалистичным.** Допиши: `Clearly stylized, not photorealistic: simplified shapes, smooth surfaces, painted-looking soft textures like a modern animated film.`
+- **Вверху или в центре пола много деталей.** Допиши: `Leave the top 15% and the entire lower center completely plain and empty.`
+- **Ночь не совпала с днём по композиции.** Открой новый чат, прикрепи `bg_room.png` и повтори промпт шага 2.
 
 ---
 

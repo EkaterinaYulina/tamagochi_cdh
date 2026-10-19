@@ -13,6 +13,7 @@ from pathlib import Path
 from PIL import Image
 
 MAX_SIDE = 512
+BG_WIDTH = 768
 EXT = {".png", ".jpg", ".jpeg", ".webp"}
 
 
@@ -32,6 +33,15 @@ def process(src: Path, dst: Path, use_rembg: bool) -> None:
     print(f"  {src.name} -> {dst.name}  {im.size[0]}x{im.size[1]}  {dst.stat().st_size // 1024} KB")
 
 
+def process_bg(src: Path, dst: Path) -> None:
+    """Фоны (bg_*): без удаления фона и обрезки, только ресайз по ширине."""
+    im = Image.open(src).convert("RGB")
+    if im.width > BG_WIDTH:
+        im = im.resize((BG_WIDTH, round(im.height * BG_WIDTH / im.width)), Image.LANCZOS)
+    im.save(dst, "WEBP", quality=84, method=6)
+    print(f"  {src.name} -> {dst.name}  {im.size[0]}x{im.size[1]}  {dst.stat().st_size // 1024} KB")
+
+
 def main() -> None:
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     use_rembg = "--rembg" in sys.argv
@@ -45,7 +55,10 @@ def main() -> None:
         print("В папке нет изображений")
         sys.exit(1)
     for f in files:
-        process(f, dst_dir / (f.stem + ".webp"), use_rembg)
+        if f.stem.startswith("bg_"):
+            process_bg(f, dst_dir / (f.stem + ".webp"))
+        else:
+            process(f, dst_dir / (f.stem + ".webp"), use_rembg)
 
 
 if __name__ == "__main__":
