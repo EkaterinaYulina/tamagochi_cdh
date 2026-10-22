@@ -144,7 +144,7 @@ button{font-family:inherit}
 
 
 /* ---------- нижняя панель ---------- */
-#acts{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:12px 8px 10px;margin:auto 0 14px;border-radius:30px}
+#acts{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:12px 6px 10px;margin:auto 0 14px;border-radius:30px}
 #acts::after{inset:5px;border-radius:26px}
 #acts button{position:relative;z-index:1;background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ink);cursor:pointer}
 #acts .tile{width:100%;max-width:62px;aspect-ratio:1;transition:transform .12s}
@@ -276,7 +276,7 @@ button{font-family:inherit}
 .row.static{cursor:default}
 .row.wish{border-color:var(--accent);animation:wishp 1.2s ease-in-out infinite alternate}
 @keyframes wishp{from{box-shadow:0 0 0 2px #e0714f33}to{box-shadow:0 0 0 6px #e0714f1f}}
-.row.sale::before{content:"−30%";position:absolute;left:10px;top:-7px;z-index:1;background:var(--accent);color:#fff;font-size:11px;font-weight:900;padding:2px 8px;border-radius:999px}
+.row.sale::before{content:attr(data-pct);position:absolute;left:10px;top:-7px;z-index:1;background:var(--accent);color:#fff;font-size:11px;font-weight:900;padding:2px 8px;border-radius:999px}
 .pp s{opacity:.55;font-size:12px;margin-right:2px;font-weight:700}
 .sh{font-size:12px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--ink2);margin:8px 4px 0}
 .rprog{display:flex;flex-direction:column;gap:6px;background:#fff;border-radius:18px;padding:10px 14px;border:1px solid rgba(110,70,48,.1)}
@@ -288,6 +288,26 @@ button{font-family:inherit}
 .bub svg:not(.ic),.bub img{width:38px;height:38px;object-fit:contain}
 .bub .hb{position:absolute;right:-5px;top:-5px}
 .bub .hb .ic{width:22px;height:22px}
+
+/* характер, навыки, прогулки */
+#plaque{cursor:pointer}
+#dhit{position:absolute;inset:0;z-index:4;pointer-events:none}
+#dhit .dsl{pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#petWrap{translate:var(--dx,0%) 0;transition:filter 1.6s,translate .55s cubic-bezier(.3,1.2,.5,1)}
+#petWrap.jump>.spr,#petWrap.jump>svg{animation:pjump .7s ease-out;transform-origin:50% 100%}
+#petWrap.shake>.spr,#petWrap.shake>svg{animation:pshake .6s;transform-origin:50% 100%}
+@keyframes pjump{0%,100%{transform:translateY(0)}25%{transform:translateY(-9%) scale(.97,1.04)}50%{transform:translateY(0) scale(1.05,.94)}75%{transform:translateY(-5%)}}
+@keyframes pshake{0%,100%{transform:rotate(0)}20%{transform:rotate(-4deg)}40%{transform:rotate(4deg)}60%{transform:rotate(-3deg)}80%{transform:rotate(2deg)}}
+#petWrap .away{display:flex;flex-direction:column;align-items:center;gap:2px;width:max-content;max-width:90%;margin:0 auto 22cqh;padding:14px 22px;border-radius:26px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);color:var(--ink);cursor:default}
+#petWrap .away .ic{width:38px;height:38px;filter:drop-shadow(0 2px 2px #7a4a2a55)}
+#petWrap .away b{font-size:17px;font-weight:900}
+#petWrap .away span{font-size:15px;font-weight:800;color:var(--ink2);font-variant-numeric:tabular-nums}
+.tabs button{position:relative}
+.tabs .dot{position:absolute;top:5px;right:calc(50% - 26px);width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.row .q{font-size:26px;font-weight:900;color:#fff;text-shadow:0 2px 0 #00000026}
+.row .nm .xp{margin:5px 0 1px}
+.hint{display:block;font-size:12px;font-weight:700;color:var(--ink2);margin:2px 6px 0;line-height:1.25}
+.rw.care{font-size:14px}
 </style>
 </head>
 <body>
@@ -319,6 +339,7 @@ button{font-family:inherit}
     <div id="decor"></div>
     <div id="petWrap"></div>
     <div id="fx"></div>
+    <div id="dhit"></div>
     <div class="shade"></div><div class="glow"></div><div class="flashfx"></div>
   </div>
   <div id="acts"></div>
@@ -373,14 +394,14 @@ const setHTML=(el,h)=>{if(el&&el._h!==h){el._h=h;el.innerHTML=h}};
 const I18N={
 ru:{stage:['','Малыш','Подросток','Взрослый'],sp:{cat:'Котёнок',dog:'Щенок',ham:'Хомяк'},names:{cat:'Мурзик',dog:'Бобик',ham:'Хомка'},
 pickTitle:'Выбери питомца',namePh:'Имя',start:'Начать',joined:'теперь с тобой',sure:'Точно? Прогресс пропадёт',newPet:'Новый питомец',
-feed:'Еда',play:'Игра',wash:'Мыться',sleep:'Сон',wake:'Будить',shop:'Магазин',
+feed:'Еда',play:'Игра',wash:'Мыться',walk:'Гулять',sleep:'Сон',wake:'Будить',shop:'Магазин',
 evolved:'Питомец вырос!',full:'Не хочет есть',noSleep:'Не хочет спать',sleepingNow:'Тсс, спит…',wokeUp:'Питомец проснулся',clean:'Уже чистый',
 noCoins:'Не хватает монет',tooTired:'Слишком устал для игры',catchHint:'Двигай пальцем\nЗвёзды — плюс, камни — минус',result:'Поймано звёзд',
 double:'Удвоить за видео',take:'Забрать',adCoins:'Монеты за видео',cake:'Торт',energyDrink:'Энергетик',toy:'Игрушка',close:'Закрыть',
 adDev:'Здесь была бы реклама',adErr:'Реклама сейчас недоступна',best:'Рекорд'},
 en:{stage:['','Baby','Teen','Adult'],sp:{cat:'Kitten',dog:'Puppy',ham:'Hamster'},names:{cat:'Whiskers',dog:'Buddy',ham:'Nibbles'},
 pickTitle:'Choose your pet',namePh:'Name',start:'Start',joined:'is yours now',sure:'Sure? Progress will be lost',newPet:'New pet',
-feed:'Food',play:'Play',wash:'Wash',sleep:'Sleep',wake:'Wake',shop:'Shop',
+feed:'Food',play:'Play',wash:'Wash',walk:'Walk',sleep:'Sleep',wake:'Wake',shop:'Shop',
 evolved:'Your pet grew up!',full:'Not hungry',noSleep:'Not sleepy',sleepingNow:'Shh, sleeping…',wokeUp:'Pet woke up',clean:'Already clean',
 noCoins:'Not enough coins',tooTired:'Too tired to play',catchHint:'Drag your finger\nStars are good, rocks are bad',result:'Stars caught',
 double:'Double for a video',take:'Take',adCoins:'Coins for a video',cake:'Cake',energyDrink:'Energy drink',toy:'Toy',close:'Close',
@@ -399,7 +420,8 @@ const toyE=()=>(SP[S.species]||{toy:'yarn'}).toy;
 /* ---------- состояние ---------- */
 const KEY='pet_v1';
 const def=()=>({species:null,coat:0,name:'',coins:20,hunger:80,energy:80,mood:80,clean:80,xp:0,stage:0,sleeping:false,best:0,last:Date.now(),muted:false,
-  skin:'',owned:{},placed:{},pets:[],slots:1,theme:'',shop:null,boost:0,wish:null,wishAt:Date.now()+90000,roomRw:0});
+  skin:'',owned:{},placed:{},pets:[],slots:1,theme:'',shop:null,boost:0,wish:null,wishAt:Date.now()+90000,roomRw:0,
+  skl:{agi:0,int:0,bea:0},taste:null,walk:null});
 const boostOn=()=>S.boost>Date.now();
 let S=def(),ysdk=null,player=null,adOpen=false,eating=0,lastAd=Date.now(),lastCloud=0,lastSig='';
 const cl=v=>Math.max(0,Math.min(100,v));
@@ -458,8 +480,8 @@ function checkEvolve(){
   if(ns>S.stage){S.stage=ns;toast(t('evolved'));sfx.up();burst();flash();lastSig=''}
 }
 function step(m){
-  if(!S.species)return;
-  const fh=fxm('hunger'),fe=fxm('energy'),fm=fxm('mood'),fc=fxm('clean');
+  if(!S.species||S.walk)return;
+  const fh=fxm('hunger'),fe=fxm('energy'),fm=fxm('mood')*(1-sk('bea')*.02),fc=fxm('clean');
   if(S.sleeping){
     S.energy+=4*m*fxm('sleep');S.hunger-=.8*m*fh;S.mood-=.2*m*fm;S.clean-=.4*m*fc;
     if(S.energy>=100){S.sleeping=false;toast(t('wokeUp'))}
@@ -468,19 +490,21 @@ function step(m){
     if(S.hunger<20||S.clean<20)S.mood-=.8*m*fm;
   }
   for(const k of ST)S[k]=cl(S[k]);
-  if((S.hunger+S.energy+S.mood+S.clean)/4>=55)S.xp+=m*fxm('xp');
+  if((S.hunger+S.energy+S.mood+S.clean)/4>=55)S.xp+=m*fxm('xp')*(1+sk('int')*.02);
   checkEvolve();
 }
 let saveTick=0;
 function loop(){
   const n=Date.now();let m=(n-S.last)/60000;if(m<0)m=0;m=Math.min(m,480);
-  step(m*(m>2?.4:1));S.last=n;wishTick();render();
+  ensureTaste();step(m*(m>2?.4:1));S.last=n;wishTick();walkTick();render();
   if(++saveTick%10===0)save();
 }
 function pay(n){if(S.coins<n){toast(t('noCoins'));sfx.bad();return false}S.coins-=n;return true}
 
 function act(name){
   if(adOpen||!S.species)return;
+  if(name==='walk'){openProfile();return}
+  if(S.walk&&name!=='shop'){toast(L('Гуляет, скоро вернётся','Out for a walk, back soon'));return}
   if(name==='sleep'){
     if(S.sleeping){S.sleeping=false;toast(t('wokeUp'))}
     else if(S.energy>=95){toast(t('noSleep'));return}
@@ -500,7 +524,7 @@ function act(name){
   render(true);save();
 }
 function petTap(){
-  if(adOpen||!S.species||S.sleeping)return;
+  if(adOpen||!S.species||S.sleeping||S.walk)return;
   S.mood=cl(S.mood+1.5);fl('heart');sfx.tap();render();
   const w=$('#petWrap');w.classList.remove('squish');void w.offsetWidth;w.classList.add('squish');setTimeout(()=>w.classList.remove('squish'),320);
 }
@@ -514,6 +538,7 @@ function flash(){const s=$('#scene');s.classList.remove('flash');void s.offsetWi
 
 function face(){
   if(S.sleeping)return'sleep';
+  if(pose.u>Date.now())return pose.f;
   if(eating>Date.now())return'eat';
   if(S.hunger<25||S.mood<25||S.clean<20||S.energy<15)return'sad';
   return'happy';
@@ -636,20 +661,23 @@ function render(force){
   const sl=$('[data-a=sleep]');if(sl){sl.querySelector('.lb').textContent=S.sleeping?t('wake'):t('sleep');setHTML(sl.querySelector('.tile'),ic(S.sleeping?'sun':'moon'))}
   const pr=$('.a-feed .pr');if(pr)pr.classList.toggle('no',S.coins<3);
   document.querySelectorAll('#acts button').forEach(b=>b.classList.toggle('off',!S.species));
-  const hb=!!S.species&&S.hunger<30&&!S.sleeping,wi=!hb&&S.species&&!S.sleeping&&S.wish?findItem(S.wish.id):null;
-  const sig=[S.species,S.coat,S.skin,S.stage,face(),S.clean<35,S.hunger<30,S.sleeping,wi?wi.id:''].join();
+  const away=!!S.walk,hb=!!S.species&&S.hunger<30&&!S.sleeping&&!away,wi=!hb&&!away&&S.species&&!S.sleeping&&S.wish?findItem(S.wish.id):null;
+  const sig=[S.species,S.coat,S.skin,S.stage,face(),S.clean<35,S.hunger<30,S.sleeping,wi?wi.id:'',away].join();
   if(force||sig!==lastSig){lastSig=sig;
     const bub=hb?`<div class="bub">${ic(food())}</div>`:wi?`<div class="bub wish" data-w="${wi.id}">${artOf(wi)}<span class="hb">${ic('heart')}</span></div>`:'';
-    $('#petWrap').innerHTML=S.species?petSVG()+bub:''}
+    $('#petWrap').innerHTML=!S.species?'':away?`<div class="away">${ic('paw')}<b>${L('Гуляет','Out for a walk')}</b><span id="awayT"></span></div>`:petSVG()+bub}
+  if(away){const e=$('#awayT');if(e)e.textContent=fmtT(S.walk.until-Date.now())}
 }
 function buildUI(){
   const IC={hunger:food(),energy:'bolt',mood:'smile',clean:'bubbles'},TC={hunger:'t-peach',energy:'t-butter',mood:'t-pink',clean:'t-sky'};
   $('#stats').innerHTML=ST.map(k=>`<div class="st"><div class="bd ${TC[k]}">${ic(IC[k])}</div><div class="bar"><i id="b_${k}"></i></div></div>`).join('');
-  const A=[['feed',food(),'feed','t-peach',3],['play','gamepad','play','t-mint'],['wash','bubbles','wash','t-sky'],['sleep','moon','sleep','t-lav'],['shop','bag','shop','t-butter']];
+  const A=[['feed',food(),'feed','t-peach',3],['play','gamepad','play','t-mint'],['wash','bubbles','wash','t-sky'],['walk','paw','walk','t-mint'],['sleep','moon','sleep','t-lav'],['shop','bag','shop','t-butter']];
   $('#acts').innerHTML=A.map(a=>`<button data-a="${a[0]}" class="a-${a[0]}"><span class="tile ${a[3]}">${ic(a[1])}</span><span class="lb">${t(a[2])}</span>${a[4]?`<em class="pr">${ic('coin')}${a[4]}</em>`:''}</button>`).join('');
   $('#acts').onclick=e=>{const b=e.target.closest('button');if(b){b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump');act(b.dataset.a)}};
   $('#petWrap').onclick=e=>{const w=e.target.closest('.bub.wish');if(w){if(!adOpen&&S.species)openShop('room',w.dataset.w);return}petTap()};
   $('#snd').onclick=()=>{S.muted=!S.muted;render();save()};
+  $('#plaque').onclick=()=>{if(!adOpen&&S.species)openProfile()};
+  $('#dhit').onclick=e=>{const d=e.target.closest('.dsl[data-s]');if(d)visit(d.dataset.s)};
   setHTML($('#frame'),ic('paw'));
   $('#coins')._h=null;$('#plaque')._h=null;$('#sunmoon')._h=null;$('#snd')._h=null;
 }
@@ -682,8 +710,9 @@ function startPet(){
   if(adding&&S.species)S.pets.push(snap());
   adding=false;
   Object.assign(S,{species:sel.sp,coat:sel.coat,name:(sel.name||'').trim().slice(0,12)||defName(sel.sp),
-    hunger:80,energy:80,mood:80,clean:80,xp:0,stage:1,sleeping:false,skin:'',last:Date.now()});
-  picking=false;hideOv();buildUI();preloadSprites();lastSig='';render(true);save(true);
+    hunger:80,energy:80,mood:80,clean:80,xp:0,stage:1,sleeping:false,skin:'',last:Date.now(),
+    skl:{agi:0,int:0,bea:0},taste:null,walk:null});
+  ensureTaste();picking=false;hideOv();buildUI();preloadSprites();lastSig='';render(true);save(true);
   toast(`${S.name} ${t('joined')}`);sfx.up();burst();
 }
 
@@ -758,6 +787,8 @@ function artOf(it){
 }
 function renderDecor(){
   setHTML($('#decor'),SLOTS.map(s=>{const it=DEC.find(d=>d.id===S.placed[s]);return`<div class="dsl s-${s}${it&&it.lit?' lit':''}">${it?artOf(it):''}</div>`}).join(''));
+  /* прозрачные «кнопки» над питомцем: тап по предмету запускает реакцию (коврик не нажимается, он под лапами) */
+  setHTML($('#dhit'),SLOTS.filter(s=>s!=='rug'&&S.placed[s]).map(s=>`<div class="dsl s-${s}" data-s="${s}"></div>`).join(''));
 }
 
 /* ---------- темы комнаты: assets/bg_<тема>.webp + bg_<тема>_night.webp, запасной вариант — цветокор и частицы ---------- */
@@ -845,13 +876,158 @@ function buyItem(it,p){
 function wishTick(){
   const n=Date.now();
   if(S.wish){if(n>S.wish.until||S.owned[S.wish.id]){S.wish=null;S.wishAt=n+15*60000}return}
-  if(!S.species||S.sleeping||n<S.wishAt)return;
+  if(!S.species||S.sleeping||S.walk||n<S.wishAt)return;
   const pool=DEC.filter(d=>!S.owned[d.id]&&S.stage>=d.st);
   if(pool.length)S.wish={id:pool[Math.floor(Math.random()*pool.length)].id,until:n+60*60000};
 }
 
+/* ---------- характер, навыки, прогулки, скидки дня ---------- */
+let pose={f:'',u:0};
+function setPose(f,ms){pose={f,u:Date.now()+ms};lastSig='';render()}
+function anim(c){const w=$('#petWrap');w.classList.remove('jump','shake');void w.offsetWidth;w.classList.add(c);setTimeout(()=>w.classList.remove(c),800)}
+const fmtT=ms=>{const s=Math.max(0,Math.ceil(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return(h?h+':'+String(m).padStart(2,'0'):m)+':'+String(s%60).padStart(2,'0')};
+const fmtMin=m=>m<60?m+' '+L('мин','min'):(m/60)+' '+L('ч','h');
+
+/* навыки: 0..100, уровень = десятки; влияют на монеты, опыт, настроение, находки */
+const SKL=[
+ {id:'agi',ic:'bolt',t:'t-yellow',n:['Ловкость','Agility'],d:['+3% монет за уровень, шире ловит звёзды','+3% coins per level, catches stars wider']},
+ {id:'int',ic:'star',t:'t-sky',n:['Интеллект','Intellect'],d:['+2% опыта за уровень, чаще находки','+2% XP per level, more finds on walks']},
+ {id:'bea',ic:'sparkle',t:'t-pink',n:['Обаяние','Charm'],d:['Настроение падает на 2% медленнее за уровень','Mood drops 2% slower per level']}
+];
+const sk=id=>Math.floor(((S.skl&&S.skl[id])||0)/10);
+function gain(id,v){
+  if(!S.skl)S.skl={agi:0,int:0,bea:0};
+  const o=sk(id);S.skl[id]=Math.min(100,(S.skl[id]||0)+v);
+  if(sk(id)>o){toast(L(...SKL.find(x=>x.id===id).n)+' '+sk(id)+'!');fl('sparkle')}
+}
+const care=()=>{const a=(S.hunger+S.mood)/2;return a>=75?1.3:a>=45?1:.75};
+
+/* вкусы: любимое и нелюбимое из лавки, открываются на опыте */
+const TASTE_POOL=['treat','cake','feast','toy','spa'];
+function ensureTaste(){
+  if(S.taste||!S.species)return;
+  const r=[...TASTE_POOL],pick=()=>r.splice(Math.floor(Math.random()*r.length),1)[0];
+  S.taste={l:pick(),h:pick(),kl:0,kh:0};
+}
+function tasteReact(id){
+  ensureTaste();const T=S.taste;
+  if(id===T.l){
+    T.kl=1;S.mood=cl(S.mood+15);S.xp+=1;checkEvolve();anim('jump');
+    toast(L('Обожает это!','Loves it!'));[0,150,300].forEach(d=>setTimeout(()=>fl('heart'),d));
+  }else if(id===T.h){
+    T.kh=1;S.mood=cl(S.mood-12);anim('shake');setPose('sad',1800);
+    toast(L('Фу, не любит это','Yuck, hates this'));
+  }
+}
+
+/* скидки по дням недели: ср — спа, пт — игрушки, сб/вс — пекарня */
+let dayOver=null;
+const dow=()=>dayOver!==null?dayOver:new Date().getDay();
+const BAKE={ids:['cake','treat','feast'],pct:.3,n:['Пекарня выходного дня','Weekend bakery']};
+const EVT={3:{ids:['spa'],pct:.3,n:['Спа-среда','Spa Wednesday']},5:{ids:['toy'],pct:.4,n:['Пятница игрушек','Toy Friday']},6:BAKE,0:BAKE};
+const evt=()=>EVT[dow()]||null;
+const cprice=c=>{const e=evt();return e&&e.ids.includes(c.id)?Math.round(c.price*(1-e.pct)):c.price};
+
+/* тап по предмету комнаты: питомец подходит и реагирует; раз в минуту на слот даёт чуть настроения и опыта навыка */
+const VIS={
+ bowl:{pose:['eat',1500],fl:'heart',mood:2},
+ bed:{pose:['sleep',1900],fl:'zzz',mood:1},
+ picture:{fl:'heart',mood:1,s:['bea',1]},
+ clock:{fl:'sparkle',s:['int',.8]},
+ shelf:{fl:'star',s:['int',1.5]},
+ starlamp:{fl:'sparkle',mood:2},
+ house:{pose:['sleep',1900],fl:'zzz',mood:1},
+ post:{anim:'shake',fl:'bolt',s:['agi',1.5]},
+ aqua:{anim:'jump',fl:'heart',mood:2,s:['int',.8]}
+};
+const visitAt={};
+function visit(slot){
+  const it=DEC.find(d=>d.id===S.placed[slot]),v=it&&VIS[it.id];
+  if(!v||adOpen||!S.species||S.sleeping||S.walk)return;
+  const w=$('#petWrap');
+  w.style.setProperty('--dx',slot.endsWith('_l')?'-26%':'26%');w.classList.add('go');
+  clearTimeout(visit.t);visit.t=setTimeout(()=>{w.classList.remove('go');w.style.setProperty('--dx','0%')},1700);
+  if(v.pose)setPose(v.pose[0],v.pose[1]);
+  if(v.anim)setTimeout(()=>anim(v.anim),450);
+  setTimeout(()=>fl(v.fl),450);sfx.tap();
+  const n=Date.now();
+  if((visitAt[slot]||0)<n){
+    visitAt[slot]=n+60000;
+    if(v.mood)S.mood=cl(S.mood+v.mood);
+    if(v.s)gain(v.s[0],v.s[1]);
+    save();
+  }
+}
+
+/* прогулки: питомец уходит на время (в реальных часах), возвращается с монетами и иногда с находкой */
+const WK=[
+ {id:'yard',min:20,c:[8,14],item:.05,ic:'flower',t:'t-mint',n:['Во двор','Backyard'],g:{agi:2}},
+ {id:'park',min:60,c:[25,40],item:.2,ic:'sun',t:'t-butter',n:['В парк','To the park'],g:{agi:1,int:2}},
+ {id:'trip',min:120,c:[60,90],item:.45,ic:'star',t:'t-lav',n:['В большой поход','Big trip'],g:{agi:2,int:3,bea:1}}
+];
+const walkMin=w=>Math.max(5,Math.round(w.min*(1-sk('int')*.03)));
+function startWalk(id){
+  const w=WK.find(x=>x.id===id);
+  if(!w||S.walk||S.sleeping)return;
+  if(S.energy<30||S.hunger<30){toast(L('Сначала накорми и дай отдохнуть','Feed and rest your pet first'));sfx.bad();return}
+  const n=Date.now();S.walk={id,until:n+walkMin(w)*60000};
+  hideOv();lastSig='';render(true);save(true);sfx.ok();toast(`${S.name} ${L('ушёл гулять','went for a walk')}`);
+}
+function walkTick(){
+  if(!S.walk||Date.now()<S.walk.until||!ov.classList.contains('hidden')||G||adOpen||picking)return;
+  finishWalk();
+}
+function finishWalk(){
+  const w=WK.find(x=>x.id===S.walk.id)||WK[0];S.walk=null;
+  const mult=boostOn()?2:1,coins=Math.round((w.c[0]+Math.random()*(w.c[1]-w.c[0]))*(1+sk('agi')*.03))*mult;
+  const pool=[...DEC,...TH,...SK].filter(x=>!S.owned[x.id]&&avail(x)&&!isLocked(x));
+  let found=null;
+  if(pool.length&&Math.random()<w.item+sk('int')*.015){found=pool[Math.floor(Math.random()*pool.length)];grant(found)}
+  S.coins+=coins;S.hunger=cl(S.hunger-15);S.energy=cl(S.energy-20);S.clean=cl(S.clean-20);S.mood=cl(S.mood+15);S.xp+=w.min/20;checkEvolve();
+  for(const k in w.g)gain(k,w.g[k]);
+  lastSig='';render(true);save(true);sfx.up();
+  const fv=found?view(found):null;
+  showOv(`<div class="card"><h2>${esc(S.name)} ${L('вернулся','is back')}</h2><div class="bigstar">${ic('coin')}<b>+${coins}</b>${mult>1?'<i class="x2">×2</i>':''}</div>
+${fv?plainRow('disabled',fv.tile,fv.cls,fv.name,L('Нашёл на прогулке!','Found on the walk!'),'','static'):''}
+<button class="btn go" id="gdbl">${ic('tv')}${t('double')}</button><button class="btn alt" id="gtake">${t('take')}</button></div>`);
+  const done=()=>{hideOv();render(true);save(true)};
+  $('#gdbl').onclick=()=>showRewarded(()=>{S.coins+=coins;fl('coin');done()});
+  $('#gtake').onclick=done;
+}
+
+/* карточка питомца: навыки, вкусы, прогулки */
+function openProfile(){
+  if(adOpen||!S.species)return;
+  ensureTaste();const T=S.taste;
+  const cn=id=>CONS.find(c=>c.id===id);
+  const taste=(k,known,id,heart)=>plainRow('disabled',known?ic(cn(id).icon()):'<b class="q">?</b>',heart?'t-pink':'t-sky',
+    heart?L('Любимое','Favorite'):L('Не любит','Dislikes'),known?nm(cn(id)):L('Пока неизвестно','Not found out yet'),'','static');
+  let h=`<div class="rprog"><b>${t('stage')[S.stage]} · ${t('sp')[S.species]}</b></div><div class="sh">${L('Навыки','Skills')}</div>`;
+  for(const s of SKL){
+    const v=S.skl[s.id]||0;
+    h+=`<div class="row static"><span class="tile ${s.t}">${ic(s.ic)}</span><span class="nm">${nm(s)} · ${sk(s.id)}/10<div class="xp"><i style="width:${v}%"></i></div><small>${L(...s.d)}</small></span></div>`;
+  }
+  h+=`<div class="sh">${L('Характер','Character')}</div>${taste('l',T.kl,T.l,1)}${taste('h',T.kh,T.h,0)}<small class="hint">${L('Пробуй разное в магазине, чтобы узнать вкусы','Try things from the shop to learn tastes')}</small>`;
+  h+=`<div class="sh">${L('Прогулка','Walk')}</div>`;
+  if(S.walk){
+    const w=WK.find(x=>x.id===S.walk.id)||WK[0];
+    h+=plainRow('disabled',ic(w.ic),w.t,L('Гуляет','Out for a walk'),`${L('Вернётся через','Back in')} ${fmtT(S.walk.until-Date.now())}`,'','static');
+    h+=plainRow('data-recall="1"',ic('refresh'),'t-sky',L('Позвать домой','Call home'),L('Без награды','No reward'),'');
+  }else{
+    for(const w of WK)h+=plainRow(`data-walk="${w.id}"`,ic(w.ic),w.t,nm(w),`${fmtMin(walkMin(w))} · ${w.c[0]}–${w.c[1]} ${L('монет','coins')}${w.item>=.2?' · '+L('находки','finds'):''}`,chip(L('Идти','Go'),'g'));
+  }
+  showOv(`<div class="card shop"><button class="x" data-close="1" aria-label="${t('close')}">${ic('x')}</button><h2>${esc(S.name)}</h2><div class="shbody">${h}</div></div>`);
+  ov.onclick=e=>{
+    if(e.target===ov){hideOv();return}
+    const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+    if(d.close){hideOv();return}
+    if(d.walk){startWalk(d.walk);return}
+    if(d.recall){S.walk=null;lastSig='';hideOv();render(true);save(true);toast(L('Вернулся без награды','Back with nothing'));return}
+  };
+}
+
 /* ---------- несколько питомцев ---------- */
-const PETF=['species','coat','name','hunger','energy','mood','clean','xp','stage','sleeping','skin'];
+const PETF=['species','coat','name','hunger','energy','mood','clean','xp','stage','sleeping','skin','skl','taste','walk'];
 const snap=()=>{const o={};for(const k of PETF)o[k]=S[k];return o};
 const applyPet=o=>{const d=def();for(const k of PETF)S[k]=o[k]===undefined?d[k]:o[k]};
 function switchPet(i){
@@ -883,12 +1059,14 @@ function actionPill(it,p,old){
 }
 function itemRow(it,p,old,extra){
   const v=view(it);
-  return`<button class="row ${extra||''}" data-it="${it.id}" data-p="${p}"><span class="tile ${v.cls}">${v.tile}</span><span class="nm">${v.name}<small>${v.desc}</small></span>${actionPill(it,p,old)}</button>`;
+  return`<button class="row ${extra||''}" data-it="${it.id}" data-p="${p}"${extra&&extra.includes('sale')?' data-pct="−30%"':''}><span class="tile ${v.cls}">${v.tile}</span><span class="nm">${v.name}<small>${v.desc}</small></span>${actionPill(it,p,old)}</button>`;
 }
 const plainRow=(attr,tile,cls,name,sub,right,extra)=>`<button class="row ${extra||''}" ${attr}><span class="tile ${cls}">${tile}</span><span class="nm">${name}${sub?`<small>${sub}</small>`:''}</span>${right||''}</button>`;
 
 function bodyFood(){
-  return CONS.map(c=>plainRow(`data-cons="${c.id}"`,ic(c.icon()),c.t,nm(c),L(...c.d),pricePill(c.price))).join('');
+  const e=evt();let h='';
+  if(e)h+=`<div class="rprog"><b>${L(...e.n)}</b><small>${L('Скидка −'+e.pct*100+'% сегодня: ','Today −'+e.pct*100+'%: ')}${e.ids.map(i=>nm(CONS.find(c=>c.id===i))).join(', ')}</small></div>`;
+  return h+CONS.map(c=>{const p=cprice(c),sale=p<c.price;return plainRow(`data-cons="${c.id}"${sale?` data-pct="−${e.pct*100}%"`:''}`,ic(c.icon()),c.t,nm(c),L(...c.d),pricePill(p,sale?c.price:0),sale?'sale':'')}).join('');
 }
 function bodyRoom(){
   const n=DEC.filter(d=>S.owned[d.id]).length,tot=DEC.length;
@@ -944,7 +1122,7 @@ function openShop(tab,hl,keep){
   if(adOpen||!S.species)return;
   if(tab)shopTab=tab;
   const sc=keep?((ov.querySelector('.shbody')||{}).scrollTop||0):0;
-  const T=[['food',L('Еда','Food')],['room',L('Комната','Room')],['daily',L('Витрина','Daily')],['pets',L('Питомцы','Pets')]];
+  const T=[['food',L('Еда','Food')+(evt()?'<b class="dot"></b>':'')],['room',L('Комната','Room')],['daily',L('Витрина','Daily')],['pets',L('Питомцы','Pets')]];
   const body={food:bodyFood,room:bodyRoom,daily:bodyDaily,pets:bodyPets}[shopTab]();
   showOv(`<div class="card shop"><button class="x" data-close="1" aria-label="${t('close')}">${ic('x')}</button><h2>${t('shop')}</h2>
 <div class="chip cc">${ic('coin')}<b>${Math.floor(S.coins)}</b>${boostOn()?'<i class="x2">×2</i>':''}</div>
@@ -958,7 +1136,7 @@ function openShop(tab,hl,keep){
     const b=e.target.closest('button');if(!b)return;const d=b.dataset;
     if(d.close){hideOv();render(true);return}
     if(d.tab){openShop(d.tab);return}
-    if(d.cons){const c=CONS.find(x=>x.id===d.cons);if(c&&pay(c.price)){c.use();fl(c.icon());sfx.ok();shopAgain()}return}
+    if(d.cons){const c=CONS.find(x=>x.id===d.cons);if(c&&pay(cprice(c))){c.use();fl(c.icon());sfx.ok();tasteReact(c.id);if(c.id==='toy')gain('int',2);if(c.id==='spa')gain('bea',3);shopAgain()}return}
     if(d.it){
       const it=findItem(d.it);if(!it)return;
       if(isLocked(it)){toast(L('Откроется на стадии','Unlocks at stage')+': '+t('stage')[it.st]);sfx.bad();return}
@@ -991,7 +1169,7 @@ function openGame(){
 <div id="garea"><div id="gp">${petSVG()}</div><div id="ghint">${t('catchHint').replace('\n','<br>')}</div></div></div>`);
   gp('start');
   const area=$('#garea'),r=area.getBoundingClientRect();
-  G={x:.5,score:0,time:20,items:[],spawn:0,last:performance.now(),run:true,W:r.width,H:r.height,area,pet:$('#gp')};
+  G={x:.5,score:0,time:20,items:[],spawn:0,last:performance.now(),run:true,W:r.width,H:r.height,area,pet:$('#gp'),care:care(),w:sk('agi')*2};
   G.pet.style.left='50%';
   const mv=e=>{const rr=area.getBoundingClientRect();G.x=Math.max(.08,Math.min(.92,(e.clientX-rr.left)/rr.width))};
   area.addEventListener('pointerdown',mv);area.addEventListener('pointermove',mv);
@@ -1014,7 +1192,7 @@ function gloop(now){
     }
     for(let i=G.items.length-1;i>=0;i--){
       const it=G.items[i];it.y+=it.v*dt;it.el.style.transform=`translate(-50%,${it.y}px)`;
-      if(it.y>G.H-80&&it.y<G.H-20&&Math.abs(it.x-G.x)*G.W<46){
+      if(it.y>G.H-80&&it.y<G.H-20&&Math.abs(it.x-G.x)*G.W<46+G.w){
         if(it.star){G.score++;sfx.tap()}else{G.score=Math.max(0,G.score-2);sfx.bad()}
         it.el.remove();G.items.splice(i,1);$('#gs').textContent=G.score;
       }else if(it.y>G.H){it.el.remove();G.items.splice(i,1)}
@@ -1027,7 +1205,8 @@ function gloop(now){
 }
 function endGame(){
   G.run=false;window.removeEventListener('keydown',G.key);gp('stop');
-  const base=G.score,mult=boostOn()?2:1,reward=base*mult;G=null;
+  const base=G.score,cr=G.care,mult=boostOn()?2:1,reward=Math.round(base*cr*(1+sk('agi')*.03))*mult;G=null;
+  gain('agi',Math.min(8,base*.4));
   S.coins+=reward;S.mood=cl(S.mood+Math.min(40,base*3));S.energy=cl(S.energy-15);S.xp+=2;checkEvolve();
   if(base>S.best){
     S.best=base;
@@ -1037,6 +1216,7 @@ function endGame(){
   save(true);sfx.up();
   showOv(`<div class="card"><h2>${t('result')}</h2><div class="bigstar">${ic('star')}<b>${base}</b></div>
 <div class="rw"><span class="pp">+${reward} ${ic('coin')}${mult>1?'<i class="x2">×2</i>':''}</span><span>${t('best')}: ${S.best}</span></div>
+${cr!==1?`<div class="rw care">${cr>1?L('Сытый и весёлый питомец','Fed and happy pet'):L('Голодный или грустный питомец','Hungry or sad pet')} ×${cr}</div>`:''}
 ${reward>0?`<button class="btn go" id="gdbl">${ic('tv')}${t('double')}</button>`:''}
 <button class="btn alt" id="gtake">${t('take')}</button></div>`);
   const done=()=>{hideOv();render(true);save(true);maybeInterstitial()};
@@ -1048,7 +1228,7 @@ ${reward>0?`<button class="btn go" id="gdbl">${ic('tv')}${t('double')}</button>`
 /* ---------- запуск ---------- */
 document.addEventListener('visibilitychange',()=>{if(document.hidden)save(true)});
 window.addEventListener('pagehide',()=>save(true));
-window.dbg={fxm,xp:n=>{S.xp+=n;checkEvolve();render(true)},coins:n=>{S.coins+=n;render()},state:()=>S,
+window.dbg={fxm,setDay:n=>{dayOver=n},walkEnd:()=>{if(S.walk)S.walk.until=0},visit,gain,xp:n=>{S.xp+=n;checkEvolve();render(true)},coins:n=>{S.coins+=n;render()},state:()=>S,
   reset:()=>{S=def();save(true);setTimeout(()=>location.reload(),300)}};
 (async()=>{
   await initSDK();await load();buildUI();preloadSprites();loop();render(true);
