@@ -228,6 +228,72 @@ Using the attached image as the exact reference (same room, same composition, sa
 
 ---
 
+## Магазин: предметы комнаты, темы, образы, окрасы
+Пока картинок нет, магазин работает на запасных: предметы рисуются кодом, темы дают цветокор. Игра сама подхватывает файл по имени, ничего менять не нужно. Свет у всех картинок тёплый, как в `bg_room.png`.
+
+### Предметы комнаты (11 штук)
+Один чат на все предметы. **Прикрепи `bg_room.png`** как образец стиля и света. Подставь описание из таблицы вместо `[ITEM]`. Сохраняй как `decor_<id>.png` и клади в `raw/`: `prepare_assets.py` вырежет фон и уменьшит до 512 px.
+
+**P-DECOR**
+```
+Create an image: [ITEM], a single object for a cozy pet-game room, in the same stylized 3D animated feature-film look as the attached image (use the attached image ONLY as a reference for rendering style, softness, color warmth and lighting; do not include any room, animal or character). Chubby, soft, rounded shapes like a premium toy diorama, smooth matte surfaces, felt and clay-like materials, no photorealism, no harsh textures. Soft warm sunlight from the upper left, with warm cream and peach shadows and reflected light, never gray or bluish shadows. Palette: warm cream, terracotta, sage green, dusty blue, mustard yellow. Only this one object, centered, fully visible with a small margin around it, plain flat mid-gray background (#808080), no floor, no ground shadow, no other objects, no text. Square 1:1.
+```
+
+| Файл | Подставь вместо [ITEM] |
+|---|---|
+| decor_bowl.png | a round terracotta-red ceramic pet food bowl filled with golden kibble, slightly high three-quarter view |
+| decor_bed.png | a soft round fluffy pet bed with a thick cushioned rim in lavender and cream, slightly high three-quarter view |
+| decor_picture.png | a framed painting with a thick rounded warm orange wooden frame, a cheerful soft landscape with green hills, a yellow sun and a blue sky, straight front view |
+| decor_clock.png | a round wall clock with a thick coral-red rim and a cream face with simple hands, straight front view |
+| decor_shelf.png | a small wooden wall shelf with a few chunky colorful books and a tiny potted plant on it, straight front view |
+| decor_starlamp.png | a chunky glowing yellow star-shaped hanging lamp on a thin cord with the cord visible at the top, soft warm glow, straight front view |
+| decor_rugpink.png | a round pink woven rug with concentric rings in two shades of pink and a soft tufted texture, high three-quarter view, the rug fills the frame width |
+| decor_rugblue.png | an oval dusty-blue woven rug with concentric rings in two blues and a small yellow star in the middle, high three-quarter view, the rug fills the frame width |
+| decor_house.png | a cute chunky wooden pet house with a pitched terracotta roof and a round arched doorway, three-quarter view |
+| decor_post.png | a tall cat scratching post wrapped in cream sisal rope on a wooden base with a red ball on top, three-quarter view |
+| decor_aqua.png | a small rounded glass aquarium on a wooden stand with blue water, one golden fish, green seaweed and a few bubbles, straight front view |
+
+### Темы комнаты (3 штуки × день и ночь)
+Игра берёт `bg_<тема>.webp` и `bg_<тема>_night.webp`, только если есть **оба** файла. Пока их нет, тема даёт цветокор и частицы (снег, лепестки, звёзды).
+
+**Шаг 1. День.** Новый чат, **прикрепи `bg_room.png`**. Сохрани как `bg_winter.png`, `bg_spring.png`, `bg_space.png`. Подставь тему вместо `[THEME]`
+```
+Using the attached image as the exact reference (same room, same composition, same camera angle, same furniture and props in the same places, same stylized 3D animated feature-film rendering, same empty floor area), change only the seasonal theme to [THEME]. Keep the interior warm and cozy with warm cream and peach shadows, never gray or bluish ones. Keep the top 15% calm and the lower center empty. No characters, no animals, no text. Vertical 9:16 format.
+```
+Значения `[THEME]`
+- winter: `winter: snow and a frosty rim on the window, fluffy snowdrifts outside, a few white and blue knitted accents on the pillows, tiny snowflakes in the glass`
+- spring: `spring: a blossoming cherry branch outside the window with soft pink petals, a fresh pastel green sky, a small vase of tulips standing on the wooden crate`
+- space: `space: the window shows a deep violet cosmos with a ringed planet and soft nebula, small glowing star stickers on the wall, cool violet tint in the shadows with the warm bulbs still glowing`
+
+**Шаг 2. Ночь.** Новый чат, **прикрепи день этой темы** (например `bg_winter.png`). Сохрани как `bg_winter_night.png` и т. д.
+```
+Using the attached image as the exact reference (same room, same composition, same camera angle, same furniture and objects in the same places, same stylized 3D animated feature-film rendering, same empty floor area), change only the time of day to night: the window shows a deep blue starry night in the same seasonal theme, the wall and floor turn into soft muted indigo and violet tones, the only light comes from the warm string bulbs and a faint cool moonlight patch on the floor, cozy and calm, still soft and clean with no harsh shadows. Keep the top 15% calm and the lower center empty. No characters, no animals, no text. Vertical 9:16 format.
+```
+Обработка: `bg_*` кладутся в `raw_bg/`, затем `python3 prepare_assets.py raw_bg assets`.
+
+### Образы для питомца (шапка, очки, бант)
+Образ показывается как отдельный файл спрайта. Нужны минимум `happy` всех трёх стадий, лучше все 12 спрайтов, иначе в других позах будет виден обычный кот без образа. В магазине образ появляется, когда есть `<вид>_<окрас>_3_happy_<образ>.webp`.
+
+Один чат на один образ. Прикрепляй исходный спрайт (после P-RELIGHT), сохраняй как `<имя спрайта>_<образ>.png`, например `cat_0_3_happy_hat.png`, `cat_0_2_sad_glasses.png`.
+
+**P-HAT** (суффикс `_hat`)
+```
+Using the attached image as the exact reference, keep everything identical: same character, same pose, same camera angle, same expression, same fur, same scarf if there is one, same warm lighting and warm shadows, same plain flat mid-gray background (#808080). Add only one thing: a small cute party hat in pink with a golden pom-pom on top of the head, tilted slightly, sitting between the ears without covering the eyes. Do not change anything else. Square 1:1.
+```
+
+**P-GLASSES** (суффикс `_glasses`)
+```
+Using the attached image as the exact reference, keep everything identical: same character, same pose, same camera angle, same expression, same fur, same scarf if there is one, same warm lighting and warm shadows, same plain flat mid-gray background (#808080). Add only one thing: a pair of round thin dark-brown glasses with clear lenses sitting on the nose in front of the eyes. For a sleeping pose, put them folded or slightly slipped down the nose. Do not change anything else. Square 1:1.
+```
+
+**P-BOW** (суффикс `_bow`)
+```
+Using the attached image as the exact reference, keep everything identical: same character, same pose, same camera angle, same expression, same fur, same scarf if there is one, same warm lighting and warm shadows, same plain flat mid-gray background (#808080). Add only one thing: a soft red bow with a small golden center on one side of the head near an ear. Do not change anything else. Square 1:1.
+```
+
+### Платные окрасы
+Окрас 1 и 2 из разделов про кота, щенка и хомяка продаются в магазине как «Новый окрас», если для вида уже есть настоящие спрайты. Для продажи нужны минимум `<вид>_<окрас>_1_happy` и `<вид>_<окрас>_3_happy`, лучше все 12. Для видов без спрайтов (пёс и хомяк пока) все три окраса остаются бесплатными, как раньше.
+
 ## Если Gemini ошибается
 - **Стадия выглядит взрослой.** Сначала сделай малыша, затем используй P-MID с двумя прикреплёнными картинками. Игра сама масштабирует стадии (малыш 62%, подросток 80%, взрослый 100%), так что размер на картинке важен меньше, чем пропорции: большая голова, короткие ноги, детское лицо.
 - **У малыша появился шарф, или шарф стал другого цвета.** Допиши: `No scarf at all.` (для малыша) или `The scarf must be red, exactly as in the reference.` (для подростка и взрослого).
