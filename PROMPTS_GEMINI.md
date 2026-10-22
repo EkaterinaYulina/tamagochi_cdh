@@ -26,6 +26,11 @@ Using the attached image as the exact character reference (same character, same 
 Using the attached image as the exact character reference (same character, same body proportions, same fur, same scarf if there is one, same rendering style, lighting and plain flat gray background), change the pose: the animal is fast asleep, lying down curled up in a tight cozy ball, head resting on its front paws or tucked against its body, tail wrapped around itself, eyes closed, peaceful relaxed face. Slightly high three-quarter view, the whole curled-up body visible and centered, filling most of the frame. No ground shadow, no props, no text. Square 1:1.
 ```
 
+**P-RELIGHT** (поправить свет на готовой картинке). Прикрепи один исходник, сохрани результат под тем же именем. Нужен для `happy`, `sad` и `eat`. `sleep` не трогай: ночью тёмная шерсть уместна. Работает для всех видов и окрасов.
+```
+Using the attached image as the exact reference, keep everything identical: same character, same pose, same camera angle, same silhouette and proportions, same fur strands and fur pattern, same face and expression, same eye color, same scarf if there is one (same red color, shape and folds), same stylized 3D animated feature-film rendering, same plain flat mid-gray background (#808080). Change ONLY the lighting and shading on the character, so that it sits naturally in a warm cozy room with a cream and peach wall and a honey-colored wooden floor, lit by soft warm sunlight. The shadows and reflected light on the fur must be warm: every cool gray, bluish, lavender or neutral-gray shadow becomes a soft warm darker shade of the fur's own base color (for white fur: soft cream, light beige and peach), as if the fur were bouncing the warm colors of the room. The belly, chest, paws and the underside of the tail pick up a gentle honey-peach bounce light from the floor, the sides facing the wall pick up a soft cream glow, highlights are warm creamy white, not pure white. Keep a clear soft form shadow on the shadow side, just warm instead of gray, and keep a soft warm rim light. Only the shadows and reflections get warmer: the fur must not turn yellow, orange or sepia overall, must not look dirty, and must still read as clean and bright. Brightness and contrast stay about the same. Do not change the colors of the eyes, nose, inner ears, tongue and scarf. No ground shadow, no new props, no text. Square 1:1.
+```
+
 **Еда** у каждого вида своя, потому что нужна другая поза и предмет в кадре (одной улыбкой с закрытыми глазами еду не показать).
 
 **CAT-EAT**
@@ -55,7 +60,7 @@ Image 1 is the baby version and image 2 is the adult version of the same charact
 ### Окрас 0: белый
 **Шаг 1. Герой.** Новый чат, без вложений. Сохрани как `cat_0_3_happy.png`
 ```
-Create an image: a stylized 3D animated feature-film character, an adult white short-haired cat with big green eyes, pink nose and inner ears, wearing a small red scarf with a tiny gold tag. Sitting pose, full body visible including tail and paws, three-quarter view facing the camera, happy open smile, ears up. Soft cinematic lighting with a warm rim light, fine realistic fur strands with a gentle glow, large glossy expressive eyes with long lashes and catchlights, smooth appealing proportions, high detail. Plain flat neutral gray background, no ground shadow, no props, no text. Square 1:1.
+Create an image: a stylized 3D animated feature-film character, an adult white short-haired cat with big green eyes, pink nose and inner ears, wearing a small red scarf with a tiny gold tag. Sitting pose, full body visible including tail and paws, three-quarter view facing the camera, happy open smile, ears up. Soft cinematic lighting as in a warm cozy room: a warm rim light, and the shadows and reflected light on the fur are warm (soft cream, beige and peach tones, never gray, bluish or lavender shadows), fine realistic fur strands with a gentle glow, large glossy expressive eyes with long lashes and catchlights, smooth appealing proportions, high detail. Plain flat neutral gray background, no ground shadow, no props, no text. Square 1:1.
 ```
 
 **CAT-BABY**
@@ -105,7 +110,7 @@ Using the attached image as the character reference, keep everything identical (
 ### Окрас 0: золотистый
 **Шаг 1. Герой.** Новый чат, без вложений. Сохрани как `dog_0_3_happy.png`
 ```
-Create an image: a stylized 3D animated feature-film character, an adult golden retriever dog with warm brown eyes, wearing a small red scarf with a tiny gold tag. Sitting pose, full body visible including tail and paws, three-quarter view facing the camera, happy open smile with tongue out, ears relaxed. Soft cinematic lighting with a warm rim light, fine realistic fur strands with a gentle glow, large glossy expressive eyes with long lashes and catchlights, smooth appealing proportions, high detail. Plain flat neutral gray background, no ground shadow, no props, no text. Square 1:1.
+Create an image: a stylized 3D animated feature-film character, an adult golden retriever dog with warm brown eyes, wearing a small red scarf with a tiny gold tag. Sitting pose, full body visible including tail and paws, three-quarter view facing the camera, happy open smile with tongue out, ears relaxed. Soft cinematic lighting as in a warm cozy room: a warm rim light, and the shadows and reflected light on the fur are warm (soft cream, beige and peach tones, never gray, bluish or lavender shadows), fine realistic fur strands with a gentle glow, large glossy expressive eyes with long lashes and catchlights, smooth appealing proportions, high detail. Plain flat neutral gray background, no ground shadow, no props, no text. Square 1:1.
 ```
 
 **DOG-BABY**
@@ -155,7 +160,7 @@ Using the attached image as the character reference, keep everything identical (
 ### Окрас 0: золотисто-белый
 **Шаг 1. Герой.** Новый чат, без вложений. Сохрани как `ham_0_3_happy.png`
 ```
-Create an image: a stylized 3D animated feature-film character, an adult golden and white hamster with round chubby cheeks and a plump body, wearing a small red scarf with a tiny gold tag. Sitting upright, full body visible, three-quarter view facing the camera, happy smile showing two tiny front teeth. Soft cinematic lighting with a warm rim light, fine realistic fur strands with a gentle glow, large glossy expressive eyes with long lashes and catchlights, smooth appealing proportions, high detail. Plain flat neutral gray background, no ground shadow, no props, no text. Square 1:1.
+Create an image: a stylized 3D animated feature-film character, an adult golden and white hamster with round chubby cheeks and a plump body, wearing a small red scarf with a tiny gold tag. Sitting upright, full body visible, three-quarter view facing the camera, happy smile showing two tiny front teeth. Soft cinematic lighting as in a warm cozy room: a warm rim light, and the shadows and reflected light on the fur are warm (soft cream, beige and peach tones, never gray, bluish or lavender shadows), fine realistic fur strands with a gentle glow, large glossy expressive eyes with long lashes and catchlights, smooth appealing proportions, high detail. Plain flat neutral gray background, no ground shadow, no props, no text. Square 1:1.
 ```
 
 **HAM-BABY**
@@ -230,6 +235,10 @@ Using the attached image as the exact reference (same room, same composition, sa
 - **Появились пол, тень или предметы.** Допиши: `No floor, no shadow, no props, plain flat gray background.`
 - **Стиль дрейфует.** Открой новый чат, прикрепи лучший файл героя и повтори промпт.
 - **Серый фон плохо вырезается.** Допиши: `Plain flat mid-gray background (#808080).`
+- **После P-RELIGHT тени всё ещё серые.** Допиши: `The shadows must read clearly warm: cream, beige and peach, with no gray or blue left anywhere in the fur.`
+- **После P-RELIGHT кот стал жёлтым или грязным.** Допиши: `Keep the fur white and clean, warm only the shadow areas and the reflected light, lighter touch.`
+- **Оттенок теней плавает от файла к файлу.** Прикрепи вторым изображением первый удачный результат и допиши: `Match the shadow and reflected-light colors of image 2.`
+- **P-RELIGHT изменил позу, мордочку или шарф.** Открой новый чат и повтори, добавив в начало: `Do not redraw anything, only recolor the lighting.`
 
 ## Порядок работы, чтобы не тратить лишнее
 1. Герой котёнка, окрас 0. Положи `cat_0_3_happy.png` в `assets/` и посмотри, как стиль выглядит в игре.
