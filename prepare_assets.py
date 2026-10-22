@@ -5,14 +5,14 @@
     python3 prepare_assets.py <папка_с_исходниками> <папка_assets> [--rembg]
 
 Что делает: (опционально) убирает фон через rembg, обрезает прозрачные поля,
-уменьшает до 512 px по длинной стороне, сохраняет как WebP с прозрачностью.
+уменьшает до 768 px по длинной стороне, сохраняет как WebP с прозрачностью.
 Имена файлов сохраняются: cat_0_3_happy.png -> cat_0_3_happy.webp
 """
 import sys
 from pathlib import Path
 from PIL import Image
 
-MAX_SIDE = 512
+MAX_SIDE = 768
 BG_WIDTH = 768
 EXT = {".png", ".jpg", ".jpeg", ".webp"}
 
