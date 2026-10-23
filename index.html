@@ -944,7 +944,7 @@ const VIS={
  post:{anim:'shake',fl:'bolt',s:['agi',1.5]},
  aqua:{anim:'jump',fl:'heart',mood:2,s:['int',.8]}
 };
-const visitAt={};
+const visitAt={},skillAt={};
 function visit(slot){
   const it=DEC.find(d=>d.id===S.placed[slot]),v=it&&VIS[it.id];
   if(!v||adOpen||!S.species||S.sleeping||S.walk)return;
@@ -958,7 +958,8 @@ function visit(slot){
   if((visitAt[slot]||0)<n){
     visitAt[slot]=n+60000;
     if(v.mood)S.mood=cl(S.mood+v.mood);
-    if(v.s)gain(v.s[0],v.s[1]);
+    /* навык от предмета — раз в 10 минут на слот, иначе тапами он качается до максимума за полчаса */
+    if(v.s&&(skillAt[slot]||0)<n){skillAt[slot]=n+600000;gain(v.s[0],v.s[1])}
     save();
   }
 }
@@ -1232,7 +1233,8 @@ ${reward>0?`<button class="btn go" id="gdbl">${ic('tv')}${t('double')}</button>`
 /* ---------- запуск ---------- */
 document.addEventListener('visibilitychange',()=>{if(document.hidden)save(true)});
 window.addEventListener('pagehide',()=>save(true));
-window.dbg={fxm,loop,step,act,startWalk,fmtMin,cprice,grant,roomBonus,findItem,sk,endGame,game:()=>G,DEC,setDay:n=>{dayOver=n},walkEnd:()=>{if(S.walk)S.walk.until=0},visit,gain,xp:n=>{S.xp+=n;checkEvolve();render(true)},coins:n=>{S.coins+=n;render()},state:()=>S,
+/* отладочные функции (в том числе читы на монеты и опыт) доступны только при локальном запуске и в тестах, в опубликованной игре их нет */
+if(/^(localhost|127\.0\.0\.1)$/.test(location.hostname))window.dbg={fxm,loop,step,act,startWalk,fmtMin,cprice,grant,roomBonus,findItem,sk,endGame,game:()=>G,DEC,setDay:n=>{dayOver=n},walkEnd:()=>{if(S.walk)S.walk.until=0},visit,gain,xp:n=>{S.xp+=n;checkEvolve();render(true)},coins:n=>{S.coins+=n;render()},state:()=>S,
   reset:()=>{S=def();save(true);setTimeout(()=>location.reload(),300)}};
 (async()=>{
   await initSDK();await load();buildUI();preloadSprites();loop();render(true);

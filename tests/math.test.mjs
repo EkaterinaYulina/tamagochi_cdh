@@ -275,3 +275,29 @@ test('фаззинг: потребности в 0..100, монеты — нео�
   }
   g.close();
 });
+
+/* ---------- навыки от предметов комнаты ---------- */
+
+test('навык от предмета комнаты растёт не чаще раза в 10 минут на слот, настроение — раз в минуту', async () => {
+  const g = await boot();
+  Object.assign(g.S(), { hunger: 100, energy: 100, mood: 10, sleeping: false, walk: null, skl: { agi: 0, int: 0, bea: 0 } });
+  g.S().placed = { wall_r: 'shelf', floor_r: 'aqua' };
+  g.dbg.visit('wall_r');                  // полка: +1.5 интеллекта
+  near(g.S().skl.int, 1.5);
+  g.advance(2); g.dbg.visit('wall_r');    // слишком рано для навыка
+  near(g.S().skl.int, 1.5);
+  g.advance(9); g.dbg.visit('wall_r');    // прошло 11 минут
+  near(g.S().skl.int, 3);
+  g.dbg.visit('floor_r');                 // аквариум — другой слот, свой отсчёт: +0.8
+  near(g.S().skl.int, 3.8);
+  g.close();
+});
+
+test('за час активных тапов навык не набирает больше ~25 очков с одного слота', async () => {
+  const g = await boot();
+  Object.assign(g.S(), { hunger: 100, energy: 100, sleeping: false, walk: null, skl: { agi: 0, int: 0, bea: 0 } });
+  g.S().placed = { wall_r: 'shelf' };
+  for (let i = 0; i < 360; i++) { g.advance(1 / 6); g.dbg.visit('wall_r'); g.dismiss(); }
+  assert.ok(g.S().skl.int <= 1.5 * 7 + 1e-9, `int=${g.S().skl.int}`);
+  g.close();
+});
