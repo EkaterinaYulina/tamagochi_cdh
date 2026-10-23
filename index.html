@@ -479,8 +479,10 @@ function checkEvolve(){
   const ns=S.xp>=120?3:S.xp>=40?2:1;
   if(ns>S.stage){S.stage=ns;toast(t('evolved'));sfx.up();burst();flash();lastSig=''}
 }
+/* время отсутствия: первые 2 минуты идут как обычно, дальше потребности убывают в 2.5 раза медленнее (плавно, без скачка) */
+const awayTime=m=>Math.min(m,2)+Math.max(0,m-2)*.4;
 function step(m){
-  if(!S.species||S.walk)return;
+  if(!S.species)return;
   const fh=fxm('hunger'),fe=fxm('energy'),fm=fxm('mood')*(1-sk('bea')*.02),fc=fxm('clean');
   if(S.sleeping){
     S.energy+=4*m*fxm('sleep');S.hunger-=.8*m*fh;S.mood-=.2*m*fm;S.clean-=.4*m*fc;
@@ -496,7 +498,9 @@ function step(m){
 let saveTick=0;
 function loop(){
   const n=Date.now();let m=(n-S.last)/60000;if(m<0)m=0;m=Math.min(m,480);
-  ensureTaste();step(m*(m>2?.4:1));S.last=n;wishTick();walkTick();render();
+  /* пока питомец гуляет, потребности стоят; время после конца прогулки (игрока не было) считается как обычное отсутствие */
+  if(S.walk)m=Math.max(0,Math.min(m,(n-S.walk.until)/60000));
+  ensureTaste();step(awayTime(m));S.last=n;wishTick();walkTick();render();
   if(++saveTick%10===0)save();
 }
 function pay(n){if(S.coins<n){toast(t('noCoins'));sfx.bad();return false}S.coins-=n;return true}
@@ -886,7 +890,7 @@ let pose={f:'',u:0};
 function setPose(f,ms){pose={f,u:Date.now()+ms};lastSig='';render()}
 function anim(c){const w=$('#petWrap');w.classList.remove('jump','shake');void w.offsetWidth;w.classList.add(c);setTimeout(()=>w.classList.remove(c),800)}
 const fmtT=ms=>{const s=Math.max(0,Math.ceil(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return(h?h+':'+String(m).padStart(2,'0'):m)+':'+String(s%60).padStart(2,'0')};
-const fmtMin=m=>m<60?m+' '+L('мин','min'):(m/60)+' '+L('ч','h');
+const fmtMin=m=>m<60?m+' '+L('мин','min'):Math.floor(m/60)+' '+L('ч','h')+(m%60?' '+m%60+' '+L('мин','min'):'');
 
 /* навыки: 0..100, уровень = десятки; влияют на монеты, опыт, настроение, находки */
 const SKL=[
@@ -1228,7 +1232,7 @@ ${reward>0?`<button class="btn go" id="gdbl">${ic('tv')}${t('double')}</button>`
 /* ---------- запуск ---------- */
 document.addEventListener('visibilitychange',()=>{if(document.hidden)save(true)});
 window.addEventListener('pagehide',()=>save(true));
-window.dbg={fxm,setDay:n=>{dayOver=n},walkEnd:()=>{if(S.walk)S.walk.until=0},visit,gain,xp:n=>{S.xp+=n;checkEvolve();render(true)},coins:n=>{S.coins+=n;render()},state:()=>S,
+window.dbg={fxm,loop,step,act,startWalk,fmtMin,cprice,grant,roomBonus,findItem,sk,endGame,game:()=>G,DEC,setDay:n=>{dayOver=n},walkEnd:()=>{if(S.walk)S.walk.until=0},visit,gain,xp:n=>{S.xp+=n;checkEvolve();render(true)},coins:n=>{S.coins+=n;render()},state:()=>S,
   reset:()=>{S=def();save(true);setTimeout(()=>location.reload(),300)}};
 (async()=>{
   await initSDK();await load();buildUI();preloadSprites();loop();render(true);
